@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NodeMCU LED Control</title>
+</head>
+<body>
+  <h1>NodeMCU LED Control</h1>
+  <p>LED Status: <span id="ledStatus">Loading...</span></p>
+  <button id="toggleButton">Toggle LED</button>
+
+  <script>
+    const ledStatusElement = document.getElementById('ledStatus');
+    const toggleButton = document.getElementById('toggleButton');
+
+    function updateLEDStatus(status) {
+      ledStatusElement.textContent = status;
+    }
+
+    function toggleLED() {
+      fetch('/toggle')
+        .then(response => response.text())
+        .then(updateLEDStatus);
+    }
+
+    toggleButton.addEventListener('click', toggleLED);
+
+    // Periodically update LED status
+    setInterval(() => {
+      fetch('/')
+        .then(response => response.text())
+        .then(updateLEDStatus);
+    }, 1000);
+  </script>
+</body>
+</html>
